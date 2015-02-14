@@ -23,10 +23,10 @@ grid.refresh = function (led) {
         }
         for (var x = xOffset; x < xOffset + 8; x++) {
           if (typeof led[y][x] == 'undefined') {
-            return;
+            led[y][x] = 0;
           }
           if (typeof led[y][x] != 'number') {
-            return;
+            led[y][x] = 0;
           }
           if (!grid.varibright && !mapLed[y - yOffset]) {
             mapLed[y - yOffset] = [];
