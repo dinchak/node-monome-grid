@@ -1,0 +1,77 @@
+var serialosc = require('serialosc');
+
+var activeDevice;
+
+var grid = {
+  keyCb: function () {}
+};
+
+grid.key = function (cb) {
+  grid.keyCb = cb;
+};
+
+grid.refresh = function (led) {
+  if (!activeDevice) {
+    return;
+  }
+  for (var yOffset = 0; yOffset < activeDevice.sizeY; yOffset += 8) {
+    for (var xOffset = 0; xOffset < activeDevice.sizeX; xOffset += 8) {
+      var mapLed = [];
+      for (var y = yOffset; y < yOffset + 8; y++) {
+        if (typeof led[y] == 'undefined') {
+          continue;
+        }
+        for (var x = xOffset; x < xOffset + 8; x++) {
+          if (typeof led[y][x] == 'undefined') {
+            return;
+          }
+          if (typeof led[y][x] != 'number') {
+            return;
+          }
+          if (!grid.varibright && !mapLed[y - yOffset]) {
+            mapLed[y - yOffset] = [];
+          }
+          if (grid.varibright) {
+            mapLed[((y - yOffset) * 8) + x - xOffset] = led[y][x];
+          } else {
+            mapLed[y - yOffset][x - xOffset] = led[y][x] ? 1 : 0;
+          }
+        }
+      }
+      if (grid.varibright) {
+        activeDevice.levelMap(xOffset, yOffset, mapLed);
+      } else {
+        activeDevice.map(xOffset, yOffset, mapLed);
+      }
+    }
+  }
+};
+
+module.exports = function (id) {
+  var addEvent = id ? id + ':add' : 'device:add';
+
+  serialosc.start({
+    startDevices: false
+  });
+
+  serialosc.on(addEvent, function (device) {
+    if (activeDevice) {
+      return;
+    }
+    if (device.type != 'grid') {
+      return;
+    }
+    if (device.id.match(/m\d+/)) {
+      grid.varibright = true;
+    }
+    device.start();
+    device.on('initialized', function () {
+      device.on('key', function (press) {
+        grid.keyCb(press.x, press.y, press.s);
+      });
+      activeDevice = device;
+    });
+  });
+
+  return grid;
+};
