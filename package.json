@@ -1,5 +1,5 @@
 {
-  "name": "node-monome-grid",
+  "name": "monome-grid",
   "version": "0.0.1",
   "description": "simple monome grid library",
   "main": "index.js",
