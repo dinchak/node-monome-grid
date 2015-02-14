@@ -75,3 +75,5 @@ grid.refresh(led)
 ```
 
 You should initialize the LED array to the size of your monome.  For example, a 128 should use an 8x16 array.
+
+Keep in mind that it may take a moment for the grid to initialize, so if you immediately call refresh you may not see anything happen.  You can use a setInterval for example to call the refresh method in a loop and will see the LED state update once the grid has been initialized.
