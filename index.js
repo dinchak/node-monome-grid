@@ -64,12 +64,12 @@ module.exports = function (id) {
     if (device.id.match(/m\d+/)) {
       grid.varibright = true;
     }
+    activeDevice = device;
     device.start();
     device.on('initialized', function () {
       device.on('key', function (press) {
         grid.keyCb(press.x, press.y, press.s);
       });
-      activeDevice = device;
     });
   });
 
