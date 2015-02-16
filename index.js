@@ -1,4 +1,4 @@
-var serialosc = require('../node-serialosc/serialosc');
+var serialosc = require('serialosc');
 var uvrun = require('uvrun');
 
 var activeDevice;

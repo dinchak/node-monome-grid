@@ -1,4 +1,4 @@
-var grid = require('../index.js')('m1000079');
+var grid = require('monome-grid')('m1000079');
 
 grid.key(function (x, y, s) {
   console.log('x: ' + x + ', y: ' + y + ', s: ' + s);
