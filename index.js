@@ -1,8 +1,10 @@
-var serialosc = require('serialosc');
+var serialosc = require('../node-serialosc/serialosc');
+var uvrun = require('uvrun');
 
 var activeDevice;
 
 var grid = {
+  ready: false,
   keyCb: function () {}
 };
 
@@ -65,13 +67,16 @@ module.exports = function (id) {
       grid.varibright = true;
     }
     activeDevice = device;
-    device.start();
     device.on('initialized', function () {
       device.on('key', function (press) {
         grid.keyCb(press.x, press.y, press.s);
       });
+      grid.ready = true;
     });
+    device.start();
   });
-
+  while (!grid.ready) {
+    uvrun.runOnce();
+  }
   return grid;
 };
