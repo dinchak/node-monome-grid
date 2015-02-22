@@ -63,7 +63,14 @@ module.exports = function (id) {
     if (device.type != 'grid') {
       return;
     }
-    if (device.id.match(/m\d+/)) {
+    // check if 40h or series
+    if (device.id.match(/m40h\d+/) ||
+        device.id.match(/m64\-\d+/) ||
+        device.id.match(/m128\-\d+/) ||
+        device.id.match(/m256\-\d+/)) {
+      grid.varibright = false;
+    }
+    else if (device.id.match(/m\d+/)) {
       grid.varibright = true;
     }
     activeDevice = device;
