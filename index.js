@@ -63,7 +63,7 @@ module.exports = function (id) {
     if (device.type != 'grid') {
       return;
     }
-    if (device.id.match(/m\d+/)) {
+    if (device.id.match(/^m\d+$/)) {
       grid.varibright = true;
     }
     activeDevice = device;
