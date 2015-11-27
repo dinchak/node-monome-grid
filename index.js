@@ -1,5 +1,5 @@
 var serialosc = require('serialosc');
-var uvrun = require('uvrun');
+var uvrun = require('uvrun-12');
 
 var activeDevice;
 
