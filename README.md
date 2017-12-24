@@ -13,23 +13,27 @@ npm install monome-grid
 # Example
 
 ```javascript
-var grid = require('monome-grid')('m1000079');
+var monomeGrid = require('monome-grid')('m1000079');
 
-function refresh() {
-  var led = [];
-  for (var y = 0; y < 8; y++) {
-    led[y] = [];
-    for (var x = 0; x < 16; x++) {
-      led[y][x] = Math.floor(Math.random() * 16);
+monomeGrid(function (grid) {
+  grid.key(function (x, y, s) {
+    console.log('x: ' + x + ', y: ' + y + ', s: ' + s);
+  });
+
+  function refresh() {
+    var led = [];
+    for (var y = 0; y < 8; y++) {
+      led[y] = [];
+      for (var x = 0; x < 16; x++) {
+        led[y][x] = Math.floor(Math.random() * 16);
+      }
     }
+    grid.refresh(led);
   }
-  grid.refresh(led);
-}
 
-setInterval(refresh, 100);
+  refresh();
 
-grid.key(function (x, y, s) {
-  console.log('x: ' + x + ', y: ' + y + ', s: ' + s);
+  setInterval(refresh, 100);
 });
 
 ```
@@ -75,7 +79,3 @@ grid.refresh(led)
 ```
 
 You should initialize the LED array to the size of your monome.  For example, a 128 should use an 8x16 array.
-
-# Notes
-
-The `var grid = require('monome-grid')()` call will block until the grid has been initialized.  This means that execution will not continue if a grid cannot be found.

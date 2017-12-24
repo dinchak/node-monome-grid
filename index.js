@@ -48,7 +48,7 @@ grid.refresh = function (led) {
   }
 };
 
-module.exports = function (id) {
+module.exports = function (id, cb) {
   var addEvent = id ? id + ':add' : 'device:add';
 
   serialosc.start({
@@ -71,8 +71,10 @@ module.exports = function (id) {
         grid.keyCb(press.x, press.y, press.s);
       });
       grid.ready = true;
+      cb(grid);
     });
     device.start();
   });
+
   return grid;
 };
