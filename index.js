@@ -1,28 +1,26 @@
-var serialosc = require('serialosc');
+const serialosc = require('serialosc');
 
-var activeDevice;
+let activeDevice;
 
-var grid = {
+let grid = {
   ready: false,
-  keyCb: function () {}
+  keyCb: () => {}
 };
 
-grid.key = function (cb) {
-  grid.keyCb = cb;
-};
+grid.key = (cb) => grid.keyCb = cb;
 
-grid.refresh = function (led) {
+grid.refresh = (led) => {
   if (!activeDevice) {
     return;
   }
-  for (var yOffset = 0; yOffset < activeDevice.sizeY; yOffset += 8) {
-    for (var xOffset = 0; xOffset < activeDevice.sizeX; xOffset += 8) {
-      var mapLed = [];
-      for (var y = yOffset; y < yOffset + 8; y++) {
+  for (let yOffset = 0; yOffset < activeDevice.sizeY; yOffset += 8) {
+    for (let xOffset = 0; xOffset < activeDevice.sizeX; xOffset += 8) {
+      let mapLed = [];
+      for (let y = yOffset; y < yOffset + 8; y++) {
         if (typeof led[y] == 'undefined') {
           continue;
         }
-        for (var x = xOffset; x < xOffset + 8; x++) {
+        for (let x = xOffset; x < xOffset + 8; x++) {
           if (typeof led[y][x] == 'undefined') {
             led[y][x] = 0;
           }
@@ -48,33 +46,33 @@ grid.refresh = function (led) {
   }
 };
 
-module.exports = function (id, cb) {
-  var addEvent = id ? id + ':add' : 'device:add';
+module.exports = (id, cb) => {
+  return new Promise((resolve, reject) => {
+    let addEvent = id ? id + ':add' : 'device:add';
 
-  serialosc.start({
-    startDevices: false
-  });
-
-  serialosc.on(addEvent, function (device) {
-    if (activeDevice) {
-      return;
-    }
-    if (device.type != 'grid') {
-      return;
-    }
-    if (device.id.match(/^m\d+$/)) {
-      grid.varibright = true;
-    }
-    activeDevice = device;
-    device.on('initialized', function () {
-      device.on('key', function (press) {
-        grid.keyCb(press.x, press.y, press.s);
-      });
-      grid.ready = true;
-      cb(grid);
+    serialosc.start({
+      startDevices: false
     });
-    device.start();
-  });
 
-  return grid;
+    serialosc.on(addEvent, (device) => {
+      if (activeDevice) {
+        return;
+      }
+      if (device.type != 'grid') {
+        return;
+      }
+      if (device.id.match(/^m\d+$/)) {
+        grid.varibright = true;
+      }
+      activeDevice = device;
+      device.on('initialized', () => {
+        device.on('key', (press) => {
+          grid.keyCb(press.x, press.y, press.s);
+        });
+        grid.ready = true;
+        resolve(grid);
+      });
+      device.start();
+    });
+  });
 };
