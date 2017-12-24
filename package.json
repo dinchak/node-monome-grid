@@ -1,6 +1,6 @@
 {
   "name": "monome-grid",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "simple monome grid library",
   "main": "index.js",
   "scripts": {
@@ -19,13 +19,16 @@
     "name": "Tom Dinchak",
     "email": "dinchak@gmail.com"
   },
+  "contributors": [{
+    "name": "Tom Armitage",
+    "email": "tom@infovore.org"
+  }],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dinchak/node-monome-grid/issues"
   },
   "homepage": "https://github.com/dinchak/node-monome-grid",
   "dependencies": {
-    "serialosc": "0.0.4",
-    "uvrun-12": "^0.1.3"
+    "serialosc": "0.0.4"
   }
 }
