@@ -1,6 +1,6 @@
 {
   "name": "monome-grid",
-  "version": "0.0.7",
+  "version": "1.0.1",
   "description": "simple monome grid library",
   "main": "index.js",
   "scripts": {
