@@ -1,5 +1,4 @@
 var serialosc = require('serialosc');
-var uvrun = require('uvrun-12');
 
 var activeDevice;
 
@@ -75,8 +74,5 @@ module.exports = function (id) {
     });
     device.start();
   });
-  while (!grid.ready) {
-    uvrun.runOnce();
-  }
   return grid;
 };
