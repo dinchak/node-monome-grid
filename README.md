@@ -13,28 +13,26 @@ npm install monome-grid
 # Example
 
 ```javascript
-var monomeGrid = require('monome-grid')('m1000079');
+const monomeGrid = require('monome-grid')('m1000079');
 
-monomeGrid(function (grid) {
-  grid.key(function (x, y, s) {
-    console.log('x: ' + x + ', y: ' + y + ', s: ' + s);
-  });
+async function run() {
+  let grid = await monomeGrid();
+  
+  grid.key((x, y, s) => console.log(`x: ${x}, y: ${y}, s: ${s}`));
 
-  function refresh() {
-    var led = [];
-    for (var y = 0; y < 8; y++) {
+  setInterval(() => {
+    let led = [];
+    for (let y = 0; y < 8; y++) {
       led[y] = [];
-      for (var x = 0; x < 16; x++) {
+      for (let x = 0; x < 16; x++) {
         led[y][x] = Math.floor(Math.random() * 16);
       }
     }
     grid.refresh(led);
-  }
+  }, 100);
+}
 
-  refresh();
-
-  setInterval(refresh, 100);
-});
+run();
 
 ```
 
@@ -43,13 +41,13 @@ monomeGrid(function (grid) {
 First create a grid object:
 
 ```javascript
-var grid = require('monome-grid')('m1000079');
+const grid = require('monome-grid')('m1000079');
 ```
 
 You can leave the id (m1000079) empty to bind to the first grid object:
 
 ```javascript
-var grid = require('monome-grid')();
+const grid = require('monome-grid')();
 ```
 
 ## Key Listener
@@ -57,10 +55,8 @@ var grid = require('monome-grid')();
 You can define a key listener that gets called whenever a key press event is received.  The x and y arguments represent the coordinates of the button press and the s argument represents the state (1 = pressed, 0 = released):
 
 ```javascript
-grid.key(function (x, y, s) {
-  console.log('x: ' + x + ', y: ' + y + ', s: ' + s);
-  // prints x: 2, y: 3, s: 1
-});
+// prints x: 2, y: 3, s: 1
+grid.key((x, y, s) => console.log('x: ' + x + ', y: ' + y + ', s: ' + s));
 ```
 
 ## Refresh LED State
@@ -69,9 +65,9 @@ The refresh() method takes a 2-dimensional LED array as an argument.  The first 
 
 ```javascript
 // initialize empty led array
-var led = [];
+let led = [];
 // iterate over 8 columns
-for (var y = 0; y < 8; y++) {
+for (let y = 0; y < 8; y++) {
   // initialize second dimension of array (x values)
   led[y] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 }
