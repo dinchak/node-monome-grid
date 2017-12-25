@@ -46,7 +46,7 @@ grid.refresh = (led) => {
   }
 };
 
-module.exports = (id, cb) => {
+module.exports = (id) => {
   return new Promise((resolve, reject) => {
     let addEvent = id ? id + ':add' : 'device:add';
 
